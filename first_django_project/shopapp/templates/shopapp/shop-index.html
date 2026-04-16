@@ -1,0 +1,38 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Shop Index
+{% endblock %}
+
+{% block body %}
+<div style="text-align: center;">
+    <h1>Hello Shop Index!</h1>
+    <p><h1>My website will be here 😺</h1></p>
+</div>
+
+<div>
+  <ul>
+    {% for name, price in products %}
+      <li>{{ name }} for ${{ price }}</li>
+      {% if name|length == 10 %}
+        <span>☝️This is lucky product!</span>
+      {% endif %}
+    {% empty %}
+      <li>No products here</li>
+    {% endfor %}
+  </ul>
+  <p>There are {{ products|length }} products in total in the store</p>
+</div>
+
+<div>
+    Time running: {{ time_running | floatformat:2 }}
+</div>
+
+<div>
+    <p>😽😺😻😸🐱</p>
+</div>
+
+<div>
+    <p>Technical support is available from 10 to 22.</p>
+</div>
+{% endblock %}
