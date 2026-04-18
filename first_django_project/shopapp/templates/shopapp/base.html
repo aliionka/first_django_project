@@ -13,7 +13,10 @@
     Base Body
 {% endblock %}
 
-
+<div>
+    {% now "d E Y" as current_date %}
+    Date: {{ current_date|lower }}
+</div>
 
 <div>
     {% now 'l' as current_weekday %}
