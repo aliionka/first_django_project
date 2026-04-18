@@ -12,11 +12,13 @@
 
 <div>
   <ul>
-    {% for name, price in products %}
-      <li>{{ name }} for ${{ price }}</li>
-      {% if name|length == 10 %}
-        <span>☝️This is lucky product!</span>
+    {% for product in products %}
+      <li>
+        {{ product.name|title }} for ${{ product.price|floatformat:"0" }}
+        {% if product.name|length == 10 %}
+          <span>🎉️This is lucky product!</span>
       {% endif %}
+      </li>
     {% empty %}
       <li>No products here</li>
     {% endfor %}
@@ -25,7 +27,7 @@
 </div>
 
 <div>
-    Time running: {{ time_running | floatformat:2 }}
+    Time running: {{ time_running|floatformat:2 }} c.
 </div>
 
 <div>
