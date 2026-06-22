@@ -15,7 +15,7 @@ class ShopIndexView(TemplateView):
         return context
 
 
-class ShopProductView(TemplateView):
+class ShopProductView(ListView):
     """Список продуктов"""
     model = Product
     template_name = "shopapp/products_list.html"
@@ -28,7 +28,7 @@ class ShopProductView(TemplateView):
         return context
 
 
-class ShopOrderView(TemplateView):
+class ShopOrderView(ListView):
     """Список заказов с загруженными пользователями и продуктами"""
     model = Order
     template_name = "shopapp/orders_list.html"
