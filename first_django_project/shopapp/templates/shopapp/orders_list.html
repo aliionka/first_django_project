@@ -1,0 +1,46 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Orders list
+{% endblock %}
+
+
+{% block body %}
+<div>
+    <h1> 📋 Orders list </h1>
+    <div>
+        <a href="{% url 'shopapp:shop_index' %}"> ← Back to main </a>
+    </div>
+
+    <div>
+        {% if orders %}
+            {% for order in orders %}
+                <div style="border: 1px solid #ccc; margin: 10px 0; padding: 15px; border-radius: 5px;">
+                    <h3>Order #{{ order.id }}</h3>
+                    <p><strong>User:</strong> {{ order.user.username }}</p>
+                    <p><strong>Date:</strong> {{ order.order_date|date:"d.m.Y H:i" }}</p>
+                    <p><strong>Address:</strong> {{ order.address }}</p>
+                    {% if order.comment %}
+                        <p><strong>Comment:</strong> {{ order.comment }}</p>
+                    {% endif %}
+                    <p><strong>Products:</strong></p>
+                    <ul>
+                        {% for product in order.products.all %}
+                            <li>{{ product.name }} - ${{ product.price }}</li>
+                        {% empty %}
+                            <li>No products in this order</li>
+                        {% endfor %}
+                    </ul>
+                    <p>Total items: {{ order.products.all|length }}</p>
+                </div>
+            {% endfor %}
+            <p>Total orders: {{ orders|length }}</p>
+        {% else %}
+            <p>No orders here 😕</p>
+        {% endif %}
+    </div>
+
+    <div>
+        Time running: {{ time_running|floatformat:2 }} c.
+    </div>
+{% endblock %}

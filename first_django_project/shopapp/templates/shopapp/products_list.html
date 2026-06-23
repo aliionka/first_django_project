@@ -1,0 +1,41 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Products list
+{% endblock %}
+
+
+{% block body %}
+<div>
+    <h1> 📦 Products list </h1>
+    <div>
+        <a href="{% url 'shopapp:shop_index' %}"> ← Back to main </a>
+    </div>
+
+    <div>
+        <ul>
+            {% for product in products %}
+            <li>
+                {{ product.name|title }} - ${{ product.price|floatformat:"2" }}
+                {% if product.stock_availability %}
+                <span> ✅ In stock </span>
+                {% else %}
+                <span> ❌ Out of stock </span>
+                {% endif %}
+                {% if product.discount_range > 0 %}
+                <span> 🔥 {{ product.discount_range }}% off! </span>
+                {% endif %}
+            </li>
+            {% empty %}
+            <li> No products here 😕 </li>
+            {% endfor %}
+        </ul>
+        <p> Total products: {{ products.length }} </p>
+    </div>
+
+    <div>
+        Time running: {{ time_running|floatformat:2 }} c.
+    </div>
+
+</div>
+{% endblock %}
