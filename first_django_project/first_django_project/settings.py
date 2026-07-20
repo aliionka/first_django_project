@@ -38,16 +38,28 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shopapp',
+
+    'requestdataapp.apps.RequestdataappConfig',
 ]
 
 MIDDLEWARE = [
+    'requestdataapp.middleware.ExceptionHandlingMiddleware',
+
+    # Стандартные middleware Django
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+
+    # Аутентификация (нужна для доступа к request.user)
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Кастомные middleware (сначала те, что проверяют, потом те, что логируют)
+    'requestdataapp.middleware.ThrottlingMiddleware', # Проверка лимитов
+    'requestdataapp.middleware.EnhancedRequestMiddleware', # Обогащение запроса
+    'requestdataapp.middleware.CountRequestsMiddleware', # Счетчики
 ]
 
 ROOT_URLCONF = 'first_django_project.urls'
@@ -66,6 +78,20 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO'
+    },
+}
 
 WSGI_APPLICATION = 'first_django_project.wsgi.application'
 
