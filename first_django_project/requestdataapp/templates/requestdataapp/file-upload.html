@@ -1,0 +1,31 @@
+{% extends 'requestdataapp/base.html' %}
+
+{% block title %}
+  File upload
+{% endblock %}
+
+
+{% block body %}
+  <h1>Upload file</h1>
+  <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+  <p>
+    <input type="file" name="myfile">
+  </p>
+
+  <button type="submit">Upload</button>
+
+  {% if error %}
+    <div style="color: red;">{{ error }}</div>
+  {% endif %}
+  {% if success %}
+    <div style="color: green;">{{ success }}</div>
+    {% if file_info %}
+      <p>Original name: {{ file_info.original_name }}</p>
+      <p>Saved name: {{ file_info.saved_name }}</p>
+      <p>Size (KB): {{ file_info.size_kb }}</p>
+    {% endif %}
+  {% endif %}
+  </form>
+
+{% endblock %}
