@@ -50,7 +50,7 @@ def handle_file_upload(request: HttpRequest) -> HttpResponse:
                     context["error"] = f"Файл слишком большой! Максимальный размер: {MAX_SIZE // (1024*1024)} MB"
                     return render(request, "requestdataapp/file-upload.html", context)
 
-                # ПРОВЕРКА MIME-ТИПА (добавляем!)
+                # Проверка MIME-типа
                 if myfile.content_type and myfile.content_type not in ALLOWED_MIME_TYPES:
                     context["error"] = f"Недопустимый MIME-тип файла! Разрешенные: {', '.join(ALLOWED_MIME_TYPES)}"
                     return render(request, "requestdataapp/file-upload.html", context)
