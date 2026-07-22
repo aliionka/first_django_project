@@ -1,22 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="eng">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         {% block title %}
-
+          Django App
         {% endblock %}
     </title>
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-{% block body %}
+    <header>
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+    </header>
 
-{% endblock %}
+    <main>
+        {% block body %}
 
-<br>
-<div>
-    HTTP User-Agent {{ request.user_agent }}
-</div>
+        {% endblock %}
+    </main>
 
+    <footer>
+        <p>&copy; {% now "Y" %} Django Application</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

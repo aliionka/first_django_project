@@ -11,10 +11,10 @@ class Product(models.Model):
                                 verbose_name="Цена")  # DecimalField - для денег, точнее считает
     description = models.TextField(max_length=100, blank=True, verbose_name="Описание")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
-    discount = models.PositiveSmallIntegerField(verbose_name="Скидка")
-    promotion_start_date = models.DateTimeField(verbose_name="Дата начала акции")
-    promotion_end_date = models.DateTimeField(verbose_name="Дата окончания акции")
-    stock_availability = models.BooleanField(verbose_name="Наличие на складе")
+    discount = models.PositiveSmallIntegerField(verbose_name="Скидка", default=0)
+    promotion_start_date = models.DateTimeField(verbose_name="Дата начала акции", null=True, blank=True)
+    promotion_end_date = models.DateTimeField(verbose_name="Дата окончания акции", null=True, blank=True)
+    stock_availability = models.BooleanField(verbose_name="Наличие на складе", default=0)
     archived = models.BooleanField(default=False, verbose_name="Архивирован")
 
     # @property
@@ -24,7 +24,7 @@ class Product(models.Model):
     #     return self.description[:48] + "..."
 
     def __str__(self):
-        return f"Product(pk={self.pk}, name={self.name!r})"
+        return f"{self.name!r}, цена: {self.price}"
 
 
 class Order(models.Model):

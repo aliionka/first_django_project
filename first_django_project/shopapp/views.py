@@ -67,14 +67,13 @@ def create_product(request: HttpRequest) -> HttpResponse:
     return render(request, "shopapp/create_product.html", context=context)
 
 
-
 def create_order(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
-            # Product.objects.create(**form.cleaned_data)
-            # url = reverse("shopapp:products_list")
-            form.save()
+            order = form.save(commit=False)
+            order.save()
+            form.save_m2m()
             return redirect("shopapp:orders_list")
     else:
         form = OrderForm()
