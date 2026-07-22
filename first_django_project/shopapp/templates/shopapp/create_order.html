@@ -1,0 +1,333 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+  Create order
+{% endblock %}
+
+{% block body %}
+  <style>
+    /* Основной контейнер */
+    .order-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Заголовок */
+    .order-container h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 15px;
+      margin-bottom: 30px;
+    }
+
+    /* Карточка формы */
+    .order-form {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    /* Группа полей */
+    .field-group {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .field-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    /* Подписи к полям */
+    .field-group label {
+      display: block;
+      font-weight: bold;
+      font-size: 16px;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    /* Поля ввода */
+    .field-group input,
+    .field-group select,
+    .field-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+    }
+
+    /* Выпадающий список для товаров */
+    .field-group select {
+      min-height: 150px;
+      background: white;
+    }
+
+    /* Чекбоксы для товаров */
+    .field-group ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .field-group ul li {
+      display: flex !important;
+      align-items: center !important;
+      padding: 8px 12px !important;
+      margin: 2px 0 !important;
+      border-radius: 6px !important;
+      transition: background 0.2s !important;
+      min-height: 40px !important;
+    }
+
+    .field-group ul li:hover {
+      background: #f0f7ff !important;
+    }
+
+    .field-group ul li input[type="checkbox"] {
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      max-width: 18px !important;
+      margin: 0 12px 0 0 !important;
+      padding: 0 !important;
+      flex-shrink: 0 !important;
+      align-self: center !important;
+      cursor: pointer !important;
+      accent-color: #3498db !important;
+    }
+
+    .field-group ul li label {
+      font-weight: normal !important;
+      font-size: 14px !important;
+      cursor: pointer !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: 1.4 !important;
+      color: #2c3e50 !important;
+      flex: 1 !important;
+    }
+
+    .field-group ul li:has(input:checked) {
+      background: #e8f4fd !important;
+      border-left: 3px solid #3498db !important;
+      padding-left: 9px !important;
+    }
+
+
+    /* Подсказки */
+    .help-text {
+      display: block;
+      color: #7f8c8d;
+      font-size: 13px;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Ошибки */
+    .error-messages {
+      margin-top: 8px;
+    }
+
+    .error {
+      display: inline-block;
+      background: #e74c3c;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    /* Кнопки */
+    .form-actions {
+      margin-top: 35px;
+      text-align: center;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+    }
+
+    .btn-create {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 16px 60px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.1s;
+      letter-spacing: 1px;
+    }
+
+    .btn-create:hover {
+      background: #2980b9;
+      transform: scale(1.02);
+    }
+
+    .btn-create:active {
+      transform: scale(0.98);
+    }
+
+    /* Ссылка назад */
+    .back-link {
+      text-align: center;
+      margin-top: 25px;
+      padding: 15px;
+    }
+
+    .back-link a {
+      display: inline-block;
+      color: #3498db;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 20px;
+      border: 2px solid #3498db;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+
+    .back-link a:hover {
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+    }
+
+
+.user-field-wrapper {
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.user-field-wrapper select {
+  width: 50% !important;
+  min-height: 45px !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  border: 2px solid #3498db !important;
+  border-radius: 6px !important;
+  background: white !important;
+  cursor: pointer;
+}
+
+.user-field-wrapper select:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+.user-field-wrapper label {
+  font-size: 14px !important;
+  margin-bottom: 5px !important;
+  color: #2c3e50;
+}
+
+.user-field-wrapper .help-text {
+  font-size: 12px !important;
+}
+
+  </style>
+
+  <div class="order-container">
+    <h1>🛒 Создать новый заказ</h1>
+
+    <div class="order-form">
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Поле: Пользователь -->
+        <div class="user-field-wrapper">
+          <label for="{{ form.user.id_for_label }}">👤 {{ form.user.label }}</label>
+          {{ form.user }}
+          {% if form.user.help_text %}
+            <span class="help-text">{{ form.user.help_text }}</span>
+          {% endif %}
+          {% if form.user.errors %}
+            <div class="error-messages">
+              {% for error in form.user.errors %}
+                <span class="error">⚠️ {{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Поле: Товары -->
+        <div class="field-group">
+          <label>{{ form.products.label }}</label>
+          {{ form.products }}
+          {% if form.products.help_text %}
+            <span class="help-text">{{ form.products.help_text }}</span>
+          {% endif %}
+          {% if form.products.errors %}
+            <div class="error-messages">
+              {% for error in form.products.errors %}
+                <span class="error">⚠️ {{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Поле: Адрес -->
+        <div class="field-group">
+          <label for="{{ form.address.id_for_label }}">📍 {{ form.address.label }}</label>
+          {{ form.address }}
+          {% if form.address.help_text %}
+            <span class="help-text">{{ form.address.help_text }}</span>
+          {% endif %}
+          {% if form.address.errors %}
+            <div class="error-messages">
+              {% for error in form.address.errors %}
+                <span class="error">⚠️ {{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Поле: Комментарий -->
+        <div class="field-group">
+          <label for="{{ form.comment.id_for_label }}">📝 {{ form.comment.label }}</label>
+          {{ form.comment }}
+          {% if form.comment.help_text %}
+            <span class="help-text">{{ form.comment.help_text }}</span>
+          {% endif %}
+          {% if form.comment.errors %}
+            <div class="error-messages">
+              {% for error in form.comment.errors %}
+                <span class="error">⚠️ {{ error }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Кнопка -->
+        <div class="form-actions">
+          <button type="submit" class="btn-create">
+            ✅ Создать заказ
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="back-link">
+      <a href="{% url 'shopapp:orders_list' %}">
+        ⬅ Вернуться к списку заказов
+      </a>
+    </div>
+  </div>
+{% endblock %}

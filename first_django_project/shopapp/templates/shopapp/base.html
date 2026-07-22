@@ -15,16 +15,16 @@
 
 <div>
     {% now "d E Y" as current_date %}
-    Date: {{ current_date|lower }}
+    Дата: {{ current_date|lower }}
 </div>
 
-<div>
-    {% now 'l' as current_weekday %}
-    <p>Today is {{ current_weekday }}</p>
-</div>
+<!--<div>-->
+<!--    {% now 'l' as current_weekday %}-->
+<!--    <p>Сегодня {{ current_weekday }}</p>-->
+<!--</div>-->
 
 <div>
-    <p>Time: {% now 'H:i' %}</p>
+    <p>Время: {% now 'H:i' %}</p>
 </div>
 
 </body>
