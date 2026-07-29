@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <title>Homework</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="fixed-container">
+            <div>
+                <a href="#">Услуги</a>
+                <a href="#">Портфолио</a>
+                <a href="#">Стоимость</a>
+            </div>
+
+            <div>
+                <span>+7 999 555 44 33</span>
+                <button class="light-button" onclick="openModal()">Заказать звонок</button>
+
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h3>Заказать звонок</h3>
+                        <form id="callbackForm">
+                            <input type="text" placeholder="Имя" required>
+                            <input type="email" placeholder="E-mail" required>
+                            <button type="submit" class="blue-button">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </header>
+
+
+    <section class="first-block">
+        <div class="fixed-container">
+            <h1>Дмитрий Алексеев</h1>
+            <p>Фронтенд-разработчик и веб-верстальщик</p>
+            <button class="blue-button">Узнать больше</button>
+        </div>
+
+    </section>
+
+    <section>
+        <div class="fixed-container">
+            <h2>Что я делаю</h2>
+            <div class="services">
+                <div>
+                    <img src="pictures/icons/1.png" alt="Ой-ой">
+                    Вёрстка лендинг-страниц и сайтов любой сложности
+                </div>
+
+                <div>
+                    <img src="pictures/icons/2.png" alt="Ой-ой">
+                    Адаптивная вёрстка под все браузеры и устройства
+                </div>
+
+                <div>
+                    <img src="pictures/icons/3.png" alt="Ой-ой">
+                    Frontend-разработка и программирование
+                </div>
+
+                <div>
+                    <img src="pictures/icons/4.png" alt="Ой-ой">
+                    Исправление и доработка существующей вёрстки
+                </div>
+            </div>
+            <div>
+                <button class="light-button">Узнать стоимость</button>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="fixed-container">
+            <h2>Примеры работ</h2>
+            <div class="examples">
+                <div>
+                    <img src="pictures/examples/e1.png" alt="Ой-ой">
+                    Сайт психолога Веры Антоновой
+                </div>
+
+                <div>
+                    <img src="pictures/examples/e2.png" alt="Ой-ой">
+                    Сайт магазина детской одежды
+                </div>
+
+                <div>
+                    <img src="pictures/examples/e3.png" alt="Ой-ой">
+                    Сайт магазина рыболов
+                </div>
+            </div>
+            <div>
+                <button class="light-button">Заказать проект</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="price-info">
+        <div class="fixed-container">
+            <h2>
+                Адаптивная вёрстка под все<br>
+                устройства и браузеры<br>
+                от 1000 р. всего за 4 часа.*
+            </h2>
+            <p>
+                * Срок и стоимость услуг могут отличаться от заявленных и рассчитываются
+                индивидуально, в зависимости от сложности задач.
+            </p>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="fixed-container">
+            <div class="footer-content">
+                <div class="href-footer">
+                    <a href="#">Услуги</a>
+                    <a href="#">Портфолио</a>
+                    <a href="#">Стоимость</a>
+                </div>
+
+                <div class="contacts-info">
+                    <span>dmitry@alekseev.com</span>
+                    <span>+7 999 555 44 33</span>
+                </div>
+
+                <div class="footer-right">
+                    <button class="light-button">Заказать звонок</button>
+                    <div class="social-icons">
+                        <a href="pictures/fb.png"><img src="pictures/fb.png" alt="Facebook"></a>
+                        <a href="pictures/vk.png"><img src="pictures/vk.png" alt="Vk"></a>
+                        <a href="pictures/telegram.png"><img src="pictures/telegram.png" alt="Telegram"></a>
+                        <a href="pictures/inst.png"><img src="pictures/inst.png" alt="Instagram"></a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
