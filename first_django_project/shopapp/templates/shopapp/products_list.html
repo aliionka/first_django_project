@@ -16,7 +16,10 @@
         <ul>
             {% for product in products %}
             <li>
-                {{ product.name|title }} - ${{ product.price|floatformat:"2" }}
+                <a href="{% url 'shopapp:product_details' pk=product.pk %}">
+                    {{ product.name|title }} - ${{ product.price|floatformat:"2" }}
+                </a>
+
                 {% if product.stock_availability %}
                 <span> ✅ В наличии </span>
                 {% else %}

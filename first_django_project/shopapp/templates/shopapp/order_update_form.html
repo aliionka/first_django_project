@@ -1,0 +1,23 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Изменение заказа
+{% endblock %}
+
+
+{% block body %}
+    <h1>Изменение заказа</h1>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Изменить заказ</button>
+        </form>
+    </div>
+    <div>
+        <p><a href="{% url 'shopapp:order_detail' pk=object.pk %}">
+             ← Вернуться к заказу #{{ object.pk }}
+        </a></p>
+    </div>
+
+{% endblock %}

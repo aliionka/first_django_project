@@ -13,10 +13,13 @@
     </div>
 
     <div>
-        {% if orders %}
-            {% for order in orders %}
+        {% if object_list %}
+            {% for order in object_list %}
                 <div style="border: 1px solid #ccc; margin: 10px 0; padding: 15px; border-radius: 5px;">
-                    <h3>Заказ #{{ order.id }}</h3>
+                    <a href="{% url 'shopapp:order_detail' pk=order.pk %}">
+                        <h3>Заказ #{{ order.pk }}</h3>
+                    </a>
+
                     <p><strong>Пользователь:</strong> {{ order.user.username }}</p>
                     <p><strong>Дата заказа:</strong> {{ order.order_date|date:"d.m.Y H:i" }}</p>
                     <p><strong>Адрес доставки:</strong> {{ order.address }}</p>
@@ -34,7 +37,7 @@
                     <p>Всего товаров: {{ order.products.all|length }}</p>
                 </div>
             {% endfor %}
-            <p>Всего заказов: {{ orders|length }}</p>
+            <p>Всего заказов: {{ object_list|length }}</p>
         {% else %}
             <p>Заказов нет 😕</p>
         {% endif %}

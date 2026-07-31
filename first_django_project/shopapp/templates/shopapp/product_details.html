@@ -1,0 +1,26 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Товар #{{ product.pk }}
+{% endblock %}
+
+
+{% block body %}
+  <h1><strong>{{ product.name }}</strong></h1>
+  <div>
+      <div>Описание: <em>{{ product.description }}</em></div>
+      <div>Цена: <em>{{ product.price }}</em></div>
+      <div>Скидка: <em>{{ product.discount }}</em></div>
+      <div>Архивирован: <em>{{ product.archived }}</em></div>
+  </div>
+  <div>
+      <p><a href="{% url 'shopapp:product_update' pk=product.pk %}">Изменить данные о товаре</a></p>
+  </div>
+  <div>
+      <p><a href="{% url 'shopapp:product_delete' pk=product.pk %}">Архивировать товар</a></p>
+  </div>
+  <div>
+      <p><a href="{% url 'shopapp:products_list' %}"> ← Вернуться к списку товаров</a></p>
+  </div>
+
+{% endblock %}
