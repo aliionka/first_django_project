@@ -1,0 +1,34 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Заказ #{{ object.pk }} details
+{% endblock %}
+
+
+{% block body %}
+  <h1>Заказ #{{ object.pk }}</h1>
+  <div>
+      <p>Заказ пользователя {% firstof object.user.firstname object.user.username %}</p>
+      <p>Дата заказа: {{ object.order_date }}</p>
+      <p>Адрес заказа: {{ object.address }}</p>
+      <p>Комментарий к заказу: {{ object.comment }}</p>
+      <div>
+          Товары в заказе:
+          <ul>
+              {% for product in object.products.all %}
+                <li>{{ product.name }} - ${{ product.price }}</li>
+              {% endfor %}
+          </ul>
+      </div>
+  </div>
+  <div>
+      <p><a href="{% url 'shopapp:order_update' pk=object.pk %}">Изменить данные о заказе</a></p>
+  </div>
+  <div>
+      <p><a href="{% url 'shopapp:order_delete' pk=object.pk %}">Удалить заказ</a></p>
+  </div>
+  <div>
+      <p><a href="{% url 'shopapp:order_list' %}"> ← Вернуться к списку заказов</a></p>
+  </div>
+
+{% endblock %}
