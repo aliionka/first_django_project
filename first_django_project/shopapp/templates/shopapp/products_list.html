@@ -37,7 +37,8 @@
 </div>
 
 <div>
-    <a href="{% url 'shopapp:create_product' %}">
-        Добавить новый товар</a>
+    {% if perms.shopapp.add_product %}
+        <a href="{% url 'shopapp:create_product' %}">➕ Добавить новый товар</a>
+    {% endif %}
 </div>
 {% endblock %}
