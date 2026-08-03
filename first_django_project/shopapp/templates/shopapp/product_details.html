@@ -14,10 +14,14 @@
       <div>Архивирован: <em>{{ product.archived }}</em></div>
   </div>
   <div>
-      <p><a href="{% url 'shopapp:product_update' pk=product.pk %}">Изменить данные о товаре</a></p>
+      <p>
+          {% if user.is_superuser or perms.shopapp.change_product and product.created_by == user %}
+              <a href="{% url 'shopapp:product_update' pk=product.pk %}">✏️ Редактировать</a>
+          {% endif %}
+      </p>
   </div>
   <div>
-      <p><a href="{% url 'shopapp:product_delete' pk=product.pk %}">Архивировать товар</a></p>
+      <p><a href="{% url 'shopapp:product_delete' pk=product.pk %}">  Архивировать товар</a></p>
   </div>
   <div>
       <p><a href="{% url 'shopapp:products_list' %}"> ← Вернуться к списку товаров</a></p>
