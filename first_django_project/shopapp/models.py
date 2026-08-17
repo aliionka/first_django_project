@@ -87,6 +87,11 @@ class Order(models.Model):
         max_length=50,
         verbose_name="Адрес доставки"
     )
+    promocode = models.TextField(
+        verbose_name="Промокод",
+        null=True,
+        blank=True
+    )
     comment = models.TextField(
         max_length=100,
         verbose_name="Комментарий",

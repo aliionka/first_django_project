@@ -1,11 +1,14 @@
-from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Product, Order
 import time
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpRequest, JsonResponse
 from django.shortcuts import reverse, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
+import logging
+
+logger = logging.getLogger(__name__)
 
 start_time = time.time()
 
@@ -97,7 +100,7 @@ class ProductDeleteView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-class OrdersListView(LoginRequiredMixin,ListView):
+class OrdersListView(LoginRequiredMixin, ListView):
     """Список заказов с загруженными пользователями и продуктами"""
     queryset = Order.objects.select_related("user").prefetch_related("products")
     template_name = "shopapp/order_list.html"
@@ -131,3 +134,70 @@ class OrderDeleteView(DeleteView):
     model = Order
     success_url = reverse_lazy("shopapp:order_list")
     template_name = "shopapp/order_confirm_delete.html"
+
+
+class OrdersExportViews(LoginRequiredMixin, View):
+    """
+    Экспорт заказов в формате JSON
+
+    GET /orders/export/
+    Параметры:
+        - limit (optional): максимальное количество заказов (по умолчанию 100)
+        - offset (optional): сдвиг для пагинации (по умолчанию 0)
+        - user_id (optional): фильтр по пользователю
+    """
+    def get(self, request: HttpRequest) -> JsonResponse:
+        try:
+            orders = Order.objects.select_related("user").prefetch_related("products")
+
+            # Фильтрация
+            user_id = request.GET.get("user_id")
+            if user_id:
+                try:
+                    orders = orders.filter(user_id=int(user_id))
+                except ValueError:
+                    return JsonResponse({"error": "Invalid format user_id"}, status=400)
+
+            # Пагинация (offset + limit)
+            limit = request.GET.get("limit", 100)  # По умолчанию 100
+            try:
+                limit = int(limit)
+                if limit > 1000:
+                    limit = 1000
+            except ValueError:
+                limit = 100
+
+            offset = request.GET.get("offset", 0)
+            try:
+                offset = int(offset)
+            except ValueError:
+                offset = 0
+
+            # общее количество заказов
+            total_count = orders.count()
+
+            orders = orders.order_by("-order_date")[offset:offset + limit]
+
+            orders_data = [
+                {
+                    "pk": order.pk,
+                    "address": order.address,
+                    "promocode": order.promocode,
+                    "user_id": order.user.pk,
+                    "user_name": order.user.username,
+                    "list_id_products": [product.pk for product in order.products.all()],
+                    "order_date": order.order_date.isoformat(),
+                }
+                for order in orders
+            ]
+            return JsonResponse({
+                "count": len(orders_data),
+                "total": total_count,
+                "offset": offset,
+                "limit": limit,
+                "orders": orders_data,
+            })
+
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}", exc_info=True)
+            return JsonResponse({"error": "Internal server error"}, status=500)

@@ -1,0 +1,47 @@
+[
+  {
+    "model": "myauth.profile",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "bio": "Hello!",
+      "agreement_accepted": false
+    }
+  },
+  {
+    "model": "myauth.profile",
+    "pk": 2,
+    "fields": {
+      "user": 4,
+      "bio": "",
+      "agreement_accepted": false
+    }
+  },
+  {
+    "model": "myauth.profile",
+    "pk": 3,
+    "fields": {
+      "user": 5,
+      "bio": "",
+      "agreement_accepted": false
+    }
+  },
+  {
+    "model": "myauth.profile",
+    "pk": 4,
+    "fields": {
+      "user": 6,
+      "bio": "",
+      "agreement_accepted": false
+    }
+  },
+  {
+    "model": "myauth.profile",
+    "pk": 5,
+    "fields": {
+      "user": 7,
+      "bio": "",
+      "agreement_accepted": false
+    }
+  }
+]
