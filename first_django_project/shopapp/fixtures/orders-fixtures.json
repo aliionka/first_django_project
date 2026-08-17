@@ -1,0 +1,75 @@
+[
+{
+  "model": "shopapp.order",
+  "pk": 1,
+  "fields": {
+    "order_date": "2026-06-22T13:18:26.048Z",
+    "user": 1,
+    "address": "Москва, ул. Тверская, д. 1",
+    "promocode": null,
+    "comment": "Доставить до 18:00",
+    "products": [
+      2,
+      1
+    ]
+  }
+},
+{
+  "model": "shopapp.order",
+  "pk": 2,
+  "fields": {
+    "order_date": "2026-06-22T13:18:26.089Z",
+    "user": 1,
+    "address": "Санкт-Петербург, Невский проспект, д. 10",
+    "promocode": null,
+    "comment": "Позвонить перед доставкой test",
+    "products": [
+      3,
+      1
+    ]
+  }
+},
+{
+  "model": "shopapp.order",
+  "pk": 4,
+  "fields": {
+    "order_date": "2026-07-22T06:34:34.126Z",
+    "user": 1,
+    "address": "86 Sredny Aveny, Saint Petersburg",
+    "promocode": null,
+    "comment": "",
+    "products": [
+      7,
+      9
+    ]
+  }
+},
+{
+  "model": "shopapp.order",
+  "pk": 5,
+  "fields": {
+    "order_date": "2026-07-22T06:44:32.633Z",
+    "user": 1,
+    "address": "86 Bolshoy Aveny, Saint Petersburg",
+    "promocode": null,
+    "comment": "",
+    "products": [
+      7
+    ]
+  }
+},
+{
+  "model": "shopapp.order",
+  "pk": 7,
+  "fields": {
+    "order_date": "2026-07-31T08:24:24.075Z",
+    "user": 1,
+    "address": "Saint-Petersburg, Lazo street, 10",
+    "promocode": null,
+    "comment": "",
+    "products": [
+      6
+    ]
+  }
+}
+]
