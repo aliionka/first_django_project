@@ -1,0 +1,35 @@
+{% extends 'myauth/base.html' %}
+
+{% block title %}
+    List of users
+{% endblock %}
+
+{% block body %}
+    <h1>List of users</h1>
+    <div>
+        <ul>
+            {% for profile in profiles %}
+            <li>
+                <a href="{% url 'myauth:profile_detail' pk=profile.pk %}">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}"
+                             width="30"
+                             height="30"
+                             style="object-fit:cover; border-radius:50%;" />
+                    {% endif %}
+                    {{ profile.user.username }}
+                    {% if profile.user.first_name %}
+                        ({{ profile.user.first_name }} {{ profile.user.last_name }})
+                    {% endif %}
+                </a>
+            </li>
+            {% empty %}
+                <li>No users found</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <a href="{% url 'myauth:about-me' %}">← Go back to my profile</a>
+    </div>
+{% endblock %}

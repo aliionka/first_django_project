@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Order
+from .models import Product, Order, ProductImage
 
 
 class ProductForm(forms.ModelForm):
@@ -13,6 +13,7 @@ class ProductForm(forms.ModelForm):
             'promotion_start_date',
             'promotion_end_date',
             'stock_availability',
+            'preview',
         ]
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
@@ -37,6 +38,12 @@ class ProductForm(forms.ModelForm):
         return discount
 
 
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ("images", "description")
+
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -47,11 +54,11 @@ class OrderForm(forms.ModelForm):
             'comment',
         ]
         widgets = {
-            'user': forms.Select(attrs={'class': 'form-control'}), # Select для ForeignKey
+            'user': forms.Select(attrs={'class': 'form-control'}),  # Select для ForeignKey
             'products': forms.CheckboxSelectMultiple(attrs={
                 'class': 'product-checkbox',
                 'style': 'vertical-align: middle;'
-            }), # или SelectMultiple для ManyToMany
+            }),  # или SelectMultiple для ManyToMany
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'comment': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
         }

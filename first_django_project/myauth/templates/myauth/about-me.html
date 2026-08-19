@@ -8,16 +8,46 @@
     <h1>User info</h1>
 
     {% if user.is_authenticated %}
-        <h2>Details</h2>
-        <p>Username: {{ user.username }}</p>
-        <p>First name: {{ user.first_name }}</p>
-        <p>Last name: {{ user.last_name }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Bio: {{ user.profile.bio }}</p>
+        <div>
+            <div>
+                {% if user.profile and user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}"
+                     alt="{{ user.profile.avatar.name }}"
+                     width="150"
+                     height="150"
+                     style="object-fit:cover; border-radius:50%;" />
+            {% else %}
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 80px; color: #ccc;">👤</div>
+                    <h2>The user's avatar is missing</h2>
+                    <p>Add a user's photo?</p>
+                </div>
+            {% endif %}
+            </div>
+
+            <div style="margin: 20px 0;">
+                <a href="{% url 'myauth:profile_update' pk=profile.pk %}" class="btn btn-primary">
+                    {% if user.profile.avatar %}
+                        Change profile
+                    {% else %}
+                        Add avatar
+                    {% endif %}
+                </a>
+            </div>
+
+            <h2>Details</h2>
+                <p><strong>Username: </strong>{{ user.username }}</p>
+                <p><strong>First name: </strong>{{ user.first_name|default:"Not specified" }}</p>
+                <p><strong>Last name: </strong>{{ user.last_name|default:"Not specified" }}</p>
+                <p><strong>Email: </strong>{{ user.email|default:"Not specified" }}</p>
+                <p><strong>Bio: </strong>{{ user.profile.bio|default:"Not specified" }}</p>
+                <p><strong>Agreement accepted:</strong> {{ user.profile.agreement_accepted|yesno:"Yes,No" }}</p>
+        </div>
     {% else %}
-        <h2>User is anonymous </h2>
+        <h2>Please, <a href="{% url 'myauth:login' %}">log in</a> or <a href="{% url 'myauth:register' %}">register</a> to see your profile</h2>
     {% endif %}
 
-
-
+    <div>
+        <a href="{% url 'myauth:profiles_list' %}">👥 View all users</a>
+    </div>
 {% endblock %}

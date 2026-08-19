@@ -6,7 +6,11 @@ from django.shortcuts import reverse, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
+from django.forms import inlineformset_factory
 import logging
+
+from .forms import ProductForm, ProductImageForm
+from .models import ProductImage
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +37,8 @@ class ProductsListView(ListView):
 
 
 class ProductDetailsView(DetailView):
-    model = Product
+    # model = Product
+    queryset = Product.objects.prefetch_related("images")
     template_name = "shopapp/product_details.html"
     context_object_name = "product"
 
@@ -48,7 +53,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
     raise_exception = True
 
     model = Product
-    fields = "name", "price", "description", "stock_availability"
+    fields = "name", "price", "description", "stock_availability", "preview",
     success_url = reverse_lazy("shopapp:products_list")
     template_name = "shopapp/create_product.html"
 
@@ -63,12 +68,45 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         return response
 
 
+ProductImageFormSet = inlineformset_factory(
+    Product,
+    ProductImage,
+    form=ProductImageForm,
+    extra=3,
+    max_num=5,
+    can_delete=True,
+)
+
+
 class ProductUpdateView(UserPassesTestMixin, UpdateView):
     model = Product
-    fields = "name", "price", "description", "stock_availability"
+    # fields = "name", "price", "description", "stock_availability", "preview",
     template_name_suffix = "_update_form"
-
+    form_class = ProductForm
     raise_exception = True
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context["image_formset"] = ProductImageFormSet(
+                self.request.POST, self.request.FILES, instance=self.object
+            )
+        else:
+            context["image_formset"] = ProductImageFormSet(instance=self.object)
+        return context
+
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        image_formset = context["image_formset"]
+
+        if image_formset.is_valid():
+            self.object = form.save()
+            image_formset.instance = self.object
+            image_formset.save()
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def test_func(self):
         product = self.get_object()
