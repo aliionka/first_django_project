@@ -112,6 +112,7 @@ class Order(models.Model):
         blank=True
     )
     receipt = models.FileField(
+        verbose_name="Чек",
         null=True,
         upload_to="orders/receipts/"
     )

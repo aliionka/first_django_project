@@ -26,13 +26,17 @@
             </div>
 
             <div style="margin: 20px 0;">
-                <a href="{% url 'myauth:profile_update' pk=profile.pk %}" class="btn btn-primary">
-                    {% if user.profile.avatar %}
-                        Change profile
-                    {% else %}
-                        Add avatar
-                    {% endif %}
-                </a>
+                {% if user.profile %}
+                    <a href="{% url 'myauth:profile_update' pk=user.profile.pk %}" class="btn btn-primary">
+                        {% if user.profile.avatar %}
+                            Change profile
+                        {% else %}
+                            Add avatar
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <p>⚠️ Профиль не найден. Пожалуйста, обратитесь к администратору.</p>
+                {% endif %}
             </div>
 
             <h2>Details</h2>
