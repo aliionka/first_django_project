@@ -9,6 +9,12 @@ def product_preview_directory_path(instance: "Product", filename: str) -> str:
 
 
 class Product(models.Model):
+    """
+    Модель Product представляет товар, который
+    можно продавать  интернет-магазине.
+
+    Заказы тут: :model:`shopapp.Order`
+    """
     class Meta:
         ordering = ["name", "price"]
         verbose_name = "Товар"
@@ -16,7 +22,8 @@ class Product(models.Model):
 
     name = models.CharField(
         max_length=30,
-        verbose_name="Название товара"
+        verbose_name="Название товара",
+        db_index=True
     )
     price = models.DecimalField( # DecimalField - для денег, точнее считает
         max_digits=10,
@@ -26,7 +33,8 @@ class Product(models.Model):
     description = models.TextField(
         max_length=100,
         blank=True,
-        verbose_name="Описание"
+        verbose_name="Описание",
+        db_index=True
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
