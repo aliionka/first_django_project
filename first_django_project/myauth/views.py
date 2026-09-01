@@ -2,20 +2,28 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LogoutView
-from django.http import HttpRequest, HttpResponse, JsonResponse, HttpResponseForbidden
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, ListView, DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
 
 from .models import Profile
+from .mixins import ProfileOwnerOrStaffMixin
 
 
-class AboutMeView(TemplateView):
+class AboutMeView(UpdateView):
+    """Страница профиля с возможностью смены аватара"""
+    model = Profile
     template_name = "myauth/about-me.html"
+    fields = ("avatar", )
+    success_url = reverse_lazy("myauth:about-me")
+
+    def get_object(self, queryset=None):
+        """Возвращает профиль текущего пользователя"""
+        return self.request.user.profile
 
 
 class RegisterView(CreateView):
@@ -128,7 +136,7 @@ class ProfileDetailView(DetailView):
         return context
 
 
-class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, ProfileOwnerOrStaffMixin, UpdateView):
     model = Profile
     fields = ("bio", "agreement_accepted", "avatar")
     template_name = "myauth/profile_update.html"
@@ -140,15 +148,6 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         if pk is None:
             return self.request.user.profile
         return super().get_object(queryset)
-
-    def dispatch(self, request, *args, **kwargs):
-        """Проверка прав доступа перед обработкой запроса"""
-        user = request.user
-        profile = self.get_object()
-
-        if not (self.request.user.is_staff or profile.user == self.request.user):
-            raise PermissionDenied("You don't have the rights to edit this profile.")
-        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         """После обновления возвращаем на страницу профиля"""
