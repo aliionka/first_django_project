@@ -44,17 +44,9 @@
 
 
             <div style="margin: 20px 0;">
-                {% if user.profile %}
-                    <a href="{% url 'myauth:profile_update' pk=user.profile.pk %}" class="btn btn-primary">
-                        {% if user.profile.avatar %}
-                            Change profile
-                        {% else %}
-                            Add avatar
-                        {% endif %}
-                    </a>
-                {% else %}
-                    <p>⚠️ Профиль не найден. Пожалуйста, обратитесь к администратору.</p>
-                {% endif %}
+                <a href="{% url 'myauth:profile_update' pk=user.profile.pk %}" class="btn btn-secondary">
+                    ✏️ Edit all profile fields
+                </a>
             </div>
 
             <h2>Details</h2>

@@ -23,7 +23,11 @@ class AboutMeView(UpdateView):
 
     def get_object(self, queryset=None):
         """Возвращает профиль текущего пользователя"""
-        return self.request.user.profile
+        # return self.request.user.profile
+        profile, created = Profile.objects.get_or_create(user=self.request.user)
+        if created:
+            messages.info(self.request, "Профиль был создан автоматически")
+        return profile
 
 
 class RegisterView(CreateView):
