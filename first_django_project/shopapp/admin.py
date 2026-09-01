@@ -2,12 +2,14 @@ from django.contrib import admin
 from django.http import HttpRequest
 from django.db.models import QuerySet
 
-from .models import Product, Order
+from .models import Product, Order, ProductImage
 from .admin_mixins import ExportAsCSVMixin
 
 
 class OrderInline(admin.TabularInline):
     model = Product.orders.through
+    extra = 0
+    fields = ("order",)
 
 
 @admin.action(description="Archive products")
@@ -20,6 +22,13 @@ def mark_unarchived(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset
     queryset.update(archived=False)
 
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1  # Показывать 1 пустую форму для добавления
+    fields = ("images", "description")
+    max_num = 5  # Максимум 5 изображений
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin, ExportAsCSVMixin):
     actions = [
@@ -29,6 +38,7 @@ class ProductAdmin(admin.ModelAdmin, ExportAsCSVMixin):
     ]
     inlines = [
         OrderInline,
+        ProductImageInline,
     ]
     list_display = "pk", "name", "description_short", "price", "discount", "archived"
     list_display_links = "pk", "name"
@@ -56,15 +66,17 @@ class ProductAdmin(admin.ModelAdmin, ExportAsCSVMixin):
 
 
 # class ProductInline(admin.TabularInline):
-class ProductInline(admin.StackedInline):
-    model = Order.products.through
+# class ProductInline(admin.StackedInline):
+#     model = Order.products.through
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    inlines = [
-        ProductInline,
-    ]
+    # inlines = [
+    #     ProductInline,
+    # ]
+    filter_horizontal = ("products",)
+
     list_display = "pk", "user_verbose", "address"
 
     def get_queryset(self, request):
@@ -72,3 +84,6 @@ class OrderAdmin(admin.ModelAdmin):
 
     def user_verbose(self, obj: Order) -> str:
         return obj.user.first_name or obj.user.username
+
+
+

@@ -4,7 +4,17 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 
 
+def product_preview_directory_path(instance: "Product", filename: str) -> str:
+    return f"products/product_{instance.pk}/preview/{filename}"
+
+
 class Product(models.Model):
+    """
+    Модель Product представляет товар, который
+    можно продавать  интернет-магазине.
+
+    Заказы тут: :model:`shopapp.Order`
+    """
     class Meta:
         ordering = ["name", "price"]
         verbose_name = "Товар"
@@ -12,7 +22,8 @@ class Product(models.Model):
 
     name = models.CharField(
         max_length=30,
-        verbose_name="Название товара"
+        verbose_name="Название товара",
+        db_index=True
     )
     price = models.DecimalField( # DecimalField - для денег, точнее считает
         max_digits=10,
@@ -22,7 +33,8 @@ class Product(models.Model):
     description = models.TextField(
         max_length=100,
         blank=True,
-        verbose_name="Описание"
+        verbose_name="Описание",
+        db_index=True
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -57,15 +69,24 @@ class Product(models.Model):
         blank=True,
         verbose_name="Пользователь"
     )
-
-    # @property
-    # def description_short(self) -> str:
-    #     if len(self.description) < 48:
-    #         return self.description
-    #     return self.description[:48] + "..."
+    preview = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to=product_preview_directory_path,
+    )
 
     def __str__(self):
         return f"{self.name!r}, цена: {self.price}"
+
+
+def product_images_directory_path(instance: "ProductImage", filename: str) -> str:
+    return f"products/product_{instance.product.pk}/images/{filename}"
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
+    images = models.ImageField(upload_to=product_images_directory_path)
+    description = models.CharField(max_length=200, null=False, blank=True)
 
 
 class Order(models.Model):
@@ -97,6 +118,11 @@ class Order(models.Model):
         verbose_name="Комментарий",
         default="",
         blank=True
+    )
+    receipt = models.FileField(
+        verbose_name="Чек",
+        null=True,
+        upload_to="orders/receipts/"
     )
 
     def __str__(self):

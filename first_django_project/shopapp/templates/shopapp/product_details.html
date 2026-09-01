@@ -12,6 +12,23 @@
       <div>Цена: <em>{{ product.price }}</em></div>
       <div>Скидка: <em>{{ product.discount }}</em></div>
       <div>Архивирован: <em>{{ product.archived }}</em></div>
+
+      {% if product.preview %}
+        <img src="{{ product.preview.url }}" alt="{{ product.preview.name }}">
+      {% endif %}
+
+      <h3>Images:</h3>
+      <div>
+          {% for img in product.images.all %}
+          <div>
+              <img src="{{ img.image.url }}" alt="img.image.url">
+              <div>{{ img.description }}</div>
+          </div>
+          {% empty %}
+            <div>No images uploaded yet</div>
+          {% endfor %}
+      </div>
+
   </div>
   <div>
       <p>
