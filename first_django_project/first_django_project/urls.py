@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('api/', include('myapiapp.urls')),
+    path('blogapp/', include('blogapp.urls')),
 ]
 if settings.DEBUG:
     urlpatterns.extend(
