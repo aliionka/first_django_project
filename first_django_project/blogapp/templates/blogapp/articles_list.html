@@ -1,0 +1,42 @@
+{% extends 'blogapp/base.html' %}
+
+{% block title %}
+    Articles
+{% endblock %}
+
+
+{% block body %}
+    <h1>Articles</h1>
+
+    {% if articles %}
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <a href="{% url 'blogapp:article_detail' pk=article.pk %}">
+                        <h3>{{ article.title }}"</h3>
+                    </a>
+                    <span>by {{ article.author.name }}</span>
+                    <span>by {{ article.pub_date|date:"d.m.Y" }}</span>
+                    <span>{{ article.category.name }}</span>
+                    {% for tag in article.tags.all %}
+                        <span>#{{ tag.name }}</span>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No article yet :(</p>
+    {% endif %}
+
+    {% if is_paginated %}
+        <div>
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">← Previous</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
