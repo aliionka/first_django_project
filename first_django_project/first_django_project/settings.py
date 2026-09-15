@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'drf_spectacular',
     'shopapp',
+    'django.contrib.sitemaps',
 
     'rest_framework',
     'django_filters',

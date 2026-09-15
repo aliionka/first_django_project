@@ -5,6 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.db.models import QuerySet
 
 
+# python manage.py dumpdata --format xml shopapp.Product >shopapp-products-fixtures.xml
 class ExportAsCSVMixin:
     def export_csv(self, request: HttpRequest, queryset: QuerySet):
         meta: Options = self.model._meta

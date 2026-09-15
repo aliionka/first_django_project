@@ -4,13 +4,17 @@ shopapp/views.py.
 В этом модуле лежат различные наборы представлений
 для интернет-магазина: по товарам, заказм и т.д.
 """
+from csv import DictWriter
 
 from django.views.generic import (ListView, TemplateView,
                                   DetailView, CreateView,
                                   UpdateView, DeleteView, View)
 from .models import Product, Order
 import time
-from django.http import HttpResponseRedirect, HttpRequest, JsonResponse
+from django.http import (HttpResponseRedirect,
+                         HttpRequest,
+                         JsonResponse,
+                         HttpResponse)
 from django.shortcuts import reverse
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import (LoginRequiredMixin,
@@ -21,11 +25,17 @@ from django.forms import inlineformset_factory
 import logging
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.decorators import action
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.syndication.views import Feed
 
 from .forms import ProductForm, ProductImageForm
 from .models import ProductImage
 from .serializers import ProductSerializer, OrderSerializer
+from .common import save_csv_products
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +65,42 @@ class ProductViewSet(ModelViewSet):
         "price",
         "discount",
     ]
+
+    @action(methods=["get"], detail=False)
+    def download_csv(self, request: Request):
+        response = HttpResponse(content_type="text/csv")
+        filename = "products-export.csv"
+        response["Content-Disposition"] = f"attachment; filename={filename}"
+        queryset = self.filter_queryset(self.get_queryset())
+        fields = [
+            "name",
+            "description",
+            "price",
+            "discount",
+        ]
+        queryset = queryset.only(*fields)
+        writer = DictWriter(response, fieldnames=fields)
+        writer.writeheader()
+
+        for product in queryset:
+            writer.writerow({
+                field: getattr(product, field)
+                for field in fields
+            })
+        return response
+
+    @action(
+        detail=False,
+        methods=["post"],
+        parser_classes=[MultiPartParser],
+    )
+    def upload_csv(self, request: Request):
+        products = save_csv_products(
+            request.FILES["file"].file,
+            encoding=request.encoding,
+        )
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
 
 
 class OrderViewSet(ModelViewSet):
@@ -336,3 +382,32 @@ class OrdersExportViews(LoginRequiredMixin, View):
         except Exception as e:
             logger.error(f"Unexpected error: {e}", exc_info=True)
             return JsonResponse({"error": "Internal server error"}, status=500)
+
+
+class LatestProductsFeed(Feed):
+    title = "Products list (latest)"
+    description = "Updates on changes and addition products"
+    link = reverse_lazy("shopapp:products_list")
+
+    def items(self):
+        """
+        Реализует получение информации о продукатах
+        """
+        return (
+            Product.objects
+            .filter(created_at__isnull=False)
+            .order_by("name")[:5]
+        )
+
+    def item_title(self, item: Product):
+        """
+        Получение заголовка из объекта,
+        который возвращается в списке
+        """
+        return item.name
+
+    def item_description(self, item: Product):
+        return item.description[:50]
+
+    def item_link(self, item):
+        return item.get_absolute_url()

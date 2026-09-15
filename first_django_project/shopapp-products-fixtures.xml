@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object model="shopapp.product" pk="1">
+        <field name="name" type="CharField">Ноутбук Dell XPS 13 (new)</field>
+        <field name="price" type="DecimalField">1500.00</field>
+        <field name="description" type="TextField">Мощный ноутбук для работы и игр</field>
+        <field name="created_at" type="DateTimeField">2026-06-22T13:18:18.564329+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">2026-06-22T13:18:18.530331+00:00</field>
+        <field name="promotion_end_date" type="DateTimeField">2026-07-22T13:18:18.530347+00:00</field>
+        <field name="stock_availability" type="BooleanField">False</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="2">
+        <field name="name" type="CharField">iPhone 15 Pro</field>
+        <field name="price" type="DecimalField">1200.00</field>
+        <field name="description" type="TextField">Смартфон последнего поколения</field>
+        <field name="created_at" type="DateTimeField">2026-06-22T13:18:18.596566+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">2026-06-22T13:18:18.530372+00:00</field>
+        <field name="promotion_end_date" type="DateTimeField">2026-07-07T13:18:18.530373+00:00</field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="3">
+        <field name="name" type="CharField">Наушники Sony WH-1000XM5</field>
+        <field name="price" type="DecimalField">350.00</field>
+        <field name="description" type="TextField">Беспроводные наушники с шумоподавлением</field>
+        <field name="created_at" type="DateTimeField">2026-06-22T13:18:18.606034+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">2026-06-22T13:18:18.530375+00:00</field>
+        <field name="promotion_end_date" type="DateTimeField">2026-08-06T13:18:18.530375+00:00</field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">True</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="4">
+        <field name="name" type="CharField">Клавиатура Logitech MX Keys</field>
+        <field name="price" type="DecimalField">120.00</field>
+        <field name="description" type="TextField">Эргономичная беспроводная клавиатура</field>
+        <field name="created_at" type="DateTimeField">2026-06-22T13:18:18.615512+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">2026-06-22T13:18:18.530377+00:00</field>
+        <field name="promotion_end_date" type="DateTimeField">2026-07-12T13:18:18.530377+00:00</field>
+        <field name="stock_availability" type="BooleanField">False</field>
+        <field name="archived" type="BooleanField">True</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="5">
+        <field name="name" type="CharField">Монитор LG 27" 4K</field>
+        <field name="price" type="DecimalField">450.00</field>
+        <field name="description" type="TextField">Профессиональный монитор для дизайнеров</field>
+        <field name="created_at" type="DateTimeField">2026-06-22T13:18:18.648149+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">15</field>
+        <field name="promotion_start_date" type="DateTimeField">2026-06-22T13:18:18.530378+00:00</field>
+        <field name="promotion_end_date" type="DateTimeField">2026-08-21T13:18:18.530378+00:00</field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="6">
+        <field name="name" type="CharField">Smartphone</field>
+        <field name="price" type="DecimalField">90000.00</field>
+        <field name="description" type="TextField">Apple</field>
+        <field name="created_at" type="DateTimeField">2026-07-20T12:44:35.967012+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">False</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="7">
+        <field name="name" type="CharField">Case</field>
+        <field name="price" type="DecimalField">30.00</field>
+        <field name="description" type="TextField">The better case</field>
+        <field name="created_at" type="DateTimeField">2026-07-20T12:46:22.064517+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">15</field>
+        <field name="promotion_start_date" type="DateTimeField">2026-02-07T08:00:00+00:00</field>
+        <field name="promotion_end_date" type="DateTimeField">2026-10-07T08:00:00+00:00</field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">True</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="8">
+        <field name="name" type="CharField">Smatrphone тест</field>
+        <field name="price" type="DecimalField">1000.00</field>
+        <field name="description" type="TextField">Apple</field>
+        <field name="created_at" type="DateTimeField">2026-07-21T17:39:21.320463+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">5</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="9">
+        <field name="name" type="CharField">Tablet</field>
+        <field name="price" type="DecimalField">20.00</field>
+        <field name="description" type="TextField">lalala</field>
+        <field name="created_at" type="DateTimeField">2026-07-21T17:39:52.542122+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="10">
+        <field name="name" type="CharField">Tablet 2</field>
+        <field name="price" type="DecimalField">30.00</field>
+        <field name="description" type="TextField">pupupu</field>
+        <field name="created_at" type="DateTimeField">2026-07-21T17:46:04.961549+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="11">
+        <field name="name" type="CharField">Smatrphone 3</field>
+        <field name="price" type="DecimalField">7000.00</field>
+        <field name="description" type="TextField">Apple apple apple</field>
+        <field name="created_at" type="DateTimeField">2026-07-22T05:25:34.599124+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">15</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="12">
+        <field name="name" type="CharField">Keyboard 2.0 XO</field>
+        <field name="price" type="DecimalField">1000.00</field>
+        <field name="description" type="TextField">The best keyboard! test</field>
+        <field name="created_at" type="DateTimeField">2026-07-31T08:25:08.503778+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">False</field>
+        <field name="archived" type="BooleanField">True</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="13">
+        <field name="name" type="CharField">Keyboard 3.0 XO</field>
+        <field name="price" type="DecimalField">1500.00</field>
+        <field name="description" type="TextField">Fixed bag</field>
+        <field name="created_at" type="DateTimeField">2026-07-31T08:26:13.985839+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="14">
+        <field name="name" type="CharField">Computer mouse</field>
+        <field name="price" type="DecimalField">200.00</field>
+        <field name="description" type="TextField">Just a computer mouse</field>
+        <field name="created_at" type="DateTimeField">2026-07-31T11:15:22.430438+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">
+            <None></None>
+        </field>
+        <field name="preview" type="FileField"></field>
+    </object>
+    <object model="shopapp.product" pk="15">
+        <field name="name" type="CharField">Cat</field>
+        <field name="price" type="DecimalField">10000.00</field>
+        <field name="description" type="TextField">nice cat</field>
+        <field name="created_at" type="DateTimeField">2026-08-17T13:41:07.537674+00:00</field>
+        <field name="discount" type="PositiveSmallIntegerField">0</field>
+        <field name="promotion_start_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="promotion_end_date" type="DateTimeField">
+            <None></None>
+        </field>
+        <field name="stock_availability" type="BooleanField">True</field>
+        <field name="archived" type="BooleanField">False</field>
+        <field name="created_by" rel="ManyToOneRel" to="auth.user">1</field>
+        <field name="preview" type="FileField">products/product_15/preview/images.jpeg</field>
+    </object>
+</django-objects>
