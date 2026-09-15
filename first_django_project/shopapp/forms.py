@@ -72,3 +72,7 @@ class OrderForm(forms.ModelForm):
             'products': 'Выберите один или несколько товаров',
             'address': 'Укажите точный адрес для доставки',
         }
+
+
+class CSVImportForm(forms.Form):
+    csv_file = forms.FileField()

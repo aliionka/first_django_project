@@ -17,13 +17,22 @@ from .views import (
     OrdersExportViews,
     ProductViewSet,
     OrderViewSet,
+    LatestProductsFeed,
 )
+
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import ShopSitemap
 
 app_name = "shopapp"
 
 routers = DefaultRouter()
 routers.register("products", ProductViewSet)
 routers.register("orders", OrderViewSet)
+
+
+sitemaps = {
+    "shop": ShopSitemap,
+}
 
 urlpatterns = [
     path("", ShopIndexView.as_view(), name="shop_index"),
@@ -45,4 +54,6 @@ urlpatterns = [
     path("orders/<int:pk>/update/", OrderUpdateView.as_view(), name="order_update"),
     path("orders/<int:pk>/delete/", OrderDeleteView.as_view(), name="order_delete"),
 
+    path("products/latest/feed/", LatestProductsFeed(), name="products_feed"),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
 ]

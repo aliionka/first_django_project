@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 def product_preview_directory_path(instance: "Product", filename: str) -> str:
@@ -15,6 +14,7 @@ class Product(models.Model):
 
     Заказы тут: :model:`shopapp.Order`
     """
+
     class Meta:
         ordering = ["name", "price"]
         verbose_name = "Товар"
@@ -25,7 +25,7 @@ class Product(models.Model):
         verbose_name="Название товара",
         db_index=True
     )
-    price = models.DecimalField( # DecimalField - для денег, точнее считает
+    price = models.DecimalField(  # DecimalField - для денег, точнее считает
         max_digits=10,
         decimal_places=2,
         verbose_name="Цена"
@@ -63,8 +63,8 @@ class Product(models.Model):
     )
     created_by = models.ForeignKey(
         User,
-        on_delete=models.PROTECT, # запрещает удаление пользователя,если у него есть продукты
-        related_name="products", # можно писать user.products.all()
+        on_delete=models.PROTECT,  # запрещает удаление пользователя,если у него есть продукты
+        related_name="products",  # можно писать user.products.all()
         null=True,
         blank=True,
         verbose_name="Пользователь"
@@ -77,6 +77,9 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name!r}, цена: {self.price}"
+
+    def get_absolute_url(self):
+        return reverse("shopapp:product_details", kwargs={"pk": self.pk})
 
 
 def product_images_directory_path(instance: "ProductImage", filename: str) -> str:
@@ -127,3 +130,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Заказ №{self.id} от {self.user.username}"
+
+    def get_absolute_url(self):
+        return reverse("shopapp:order_detail", kwargs={"pk": self.pk})
