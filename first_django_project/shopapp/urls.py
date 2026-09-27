@@ -1,5 +1,5 @@
 from django.urls import path, include
-
+from django.views.decorators.cache import cache_page
 from rest_framework.routers import DefaultRouter
 
 from .views import (
@@ -18,6 +18,8 @@ from .views import (
     ProductViewSet,
     OrderViewSet,
     LatestProductsFeed,
+    UserOrdersListView,
+    ExportUserOrderListView,
 )
 
 from django.contrib.sitemaps.views import sitemap
@@ -56,4 +58,7 @@ urlpatterns = [
 
     path("products/latest/feed/", LatestProductsFeed(), name="products_feed"),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
+
+    path("users/<int:user_id>/orders/", UserOrdersListView.as_view(), name="user_order_list"),
+    path("users/<int:user_id>/orders/export/", ExportUserOrderListView.as_view(), name="export_user_order_list"),
 ]

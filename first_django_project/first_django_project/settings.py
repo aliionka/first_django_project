@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,10 +50,13 @@ INSTALLED_APPS = [
 
     'requestdataapp.apps.RequestdataappConfig',
     'myauth.apps.MyauthConfig',
-    'myapiapp.apps.MyapiappConfig',
+    'myapiapp.apps.MyapiappConfig'
+
 ]
 
 MIDDLEWARE = [
+    # 'django.middleware.cache.UpdateCacheMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'requestdataapp.middleware.ExceptionHandlingMiddleware',
 
     # Стандартные middleware Django
@@ -72,6 +76,11 @@ MIDDLEWARE = [
     'requestdataapp.middleware.CountRequestsMiddleware', # Счетчики
 
     'django.contrib.admindocs.middleware.XViewMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'first_django_project.urls'
@@ -118,6 +127,15 @@ DATABASES = {
     }
 }
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/var/tmp/django_cache",
+    }
+}
+
+CACHE_MIDDLEWARE_SECONDS = 200
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

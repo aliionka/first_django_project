@@ -1,5 +1,6 @@
-from django.urls import path
 from django.contrib.auth.views import LoginView
+from django.conf import settings
+from django.urls import include, path
 
 from .views import (
     get_cookie_view,
@@ -40,3 +41,4 @@ urlpatterns = [
 
     path("foo-bar/", FooBarView.as_view(), name="foo-bar"),
 ]
+
