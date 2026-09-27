@@ -1,0 +1,48 @@
+{% extends 'shopapp/base.html' %}
+{% load cache %}
+
+{% block title %}
+    Список заказов
+{% endblock %}
+
+
+{% block body %}
+<div>
+    <h1> 📋 Заказы пользователя {{ owner.username }} </h1>
+    <div>
+        <a href="{% url 'shopapp:shop_index' %}"> ← Вернуться на главную </a>
+    </div>
+
+    <div>
+        {% if object_list %}
+            <p>Пользователь {{ owner.username }} выполнил следующие заказы:</p>
+            {% cache 60 userinfo owner.pk %}
+                <ul>
+                    {% for order in object_list %}
+                    <li>
+                        <p><strong>Заказ #:</strong> {{ order.pk }} </p>
+                        <p><strong>Дата заказа:</strong> {{ order.order_date|date:"d.m.Y H:i" }}</p>
+                        <p><strong>Адрес доставки:</strong> {{ order.address }}</p>
+                        {% if order.comment %}
+                            <p><strong>Комментарий:</strong> {{ order.comment }}</p>
+                        {% endif %}
+                        <p><strong>Товары:</strong></p>
+                        <ul>
+                            {% for product in order.products.all %}
+                                <li>{{ product.name }} - ${{ product.price }}</li>
+                            {% empty %}
+                                <li>В заказе нет товаров</li>
+                            {% endfor %}
+                        </ul>
+                        <p>Всего товаров: {{ order.products.all|length }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <p>Всего заказов: {{ object_list|length }}</p>
+            {% endcache %}
+        {% else %}
+            <p>У пользователя {{ owner.username }} ещё нет заказов. 😕</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

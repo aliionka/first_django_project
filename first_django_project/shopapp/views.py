@@ -5,21 +5,25 @@ shopapp/views.py.
 для интернет-магазина: по товарам, заказм и т.д.
 """
 from csv import DictWriter
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from django.views.generic import (ListView, TemplateView,
                                   DetailView, CreateView,
                                   UpdateView, DeleteView, View)
+from django.http import Http404
 from .models import Product, Order
 import time
 from django.http import (HttpResponseRedirect,
                          HttpRequest,
                          JsonResponse,
                          HttpResponse)
-from django.shortcuts import reverse
+from django.shortcuts import reverse, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin,
                                         UserPassesTestMixin)
+from django.contrib.auth.decorators import user_passes_test, permission_required, login_required
 from django.contrib import messages
 from django.forms import inlineformset_factory
 import logging
@@ -31,7 +35,9 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.syndication.views import Feed
+from django.contrib.auth import get_user_model
 
+from shopapp.serializers import OrderSerializer
 from .forms import ProductForm, ProductImageForm
 from .models import ProductImage
 from .serializers import ProductSerializer, OrderSerializer
@@ -102,6 +108,11 @@ class ProductViewSet(ModelViewSet):
         serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
 
+    @method_decorator(cache_page(60 * 2))
+    def list(self, *args, **kwargs):
+        print("Hello products list!")
+        return super().list(*args, **kwargs)
+
 
 class OrderViewSet(ModelViewSet):
     """Создает ViewSet для модели Order в Django REST Framework."""
@@ -135,6 +146,7 @@ class ShopIndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         time_running = time.time() - start_time
         context["time_running"] = time_running
+        print("lala")
         return context
 
 
@@ -259,6 +271,25 @@ class ProductDeleteView(DeleteView):
         self.object.archived = True
         self.object.save()
         return HttpResponseRedirect(success_url)
+
+
+class ProductDataExportView(View):
+    def get(self, request: HttpRequest) -> HttpResponse:
+        cache_key = "products_data_export"
+        products_data = cache.get(cache_key)
+        if products_data in None:
+            products = Product.objects.order_by("pk").all()
+            products_data = [
+                {
+                    "pk": product.pk,
+                    "name": product.name,
+                    "price": product.price,
+                    "archived": product.archived,
+                }
+                for product in products
+            ]
+            cache.set(cache_key, products_data, 300)
+        return JsonResponse({"products": products_data})
 
 
 class OrdersListView(LoginRequiredMixin, ListView):
@@ -411,3 +442,88 @@ class LatestProductsFeed(Feed):
 
     def item_link(self, item):
         return item.get_absolute_url()
+
+
+class UserOrdersListView(LoginRequiredMixin, ListView):
+    """Список заказов с авторизированного пользователя"""
+
+    template_name = "shopapp/user_order_list.html"
+
+    def get_queryset(self):
+        user_id = self.kwargs["user_id"]
+        User = get_user_model()
+        self.owner = User.objects.filter(pk=user_id).first()
+        if self.owner is None:
+            raise Http404("Пользователь не найден")
+        return Order.objects.filter(user=self.owner).select_related("user").prefetch_related("products")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["owner"] = self.owner
+        return context
+
+
+class ExportUserOrderListView(LoginRequiredMixin, View):
+    """
+    Экспорт заказов пользователя в JSON.
+
+    GET /users/<int:user_id>/orders/export/
+
+    Query-параметры:
+        - limit (optional): максимум заказов на странице (по умолчанию 100, макс 1000)
+        - offset (optional): сдвиг для пагинации (по умолчанию 0)
+    """
+
+    CACHE_TIMEOUT = 300
+
+    def get(self, request: HttpRequest) -> JsonResponse:
+        user_id = self.kwargs["user_id"]
+
+        # Пагинация (offset + limit)
+        limit = request.GET.get("limit", 100)  # По умолчанию 100
+        try:
+            limit = int(limit)
+            if limit > 1000:
+                limit = 1000
+            elif limit < 0:
+                limit = 0
+        except ValueError:
+            limit = 100
+
+        offset = request.GET.get("offset", 0)
+        try:
+            offset = int(offset)
+            if offset < 0:
+                offset = 0
+        except ValueError:
+            offset = 0
+
+        # Ключ кэша
+        cache_key = f"export_orders_u{user_id}_l{limit}_o{offset}"
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return JsonResponse(cached)
+
+        owner = get_object_or_404(get_user_model(), pk=user_id)
+
+        orders_qs = (
+            Order.objects.filter(user=owner)
+            .select_related("user")
+            .prefetch_related("products")
+            .order_by("pk")
+        )
+
+        # общее количество заказов
+        total_count = orders_qs.count()
+        page = orders_qs[offset:offset + limit]
+
+        orders_data = OrderSerializer(page, many=True).data
+
+        payload = {
+            "count": total_count,
+            "offset": offset,
+            "limit": limit,
+            "orders": orders_data,
+        }
+        cache.set(cache_key, payload, self.CACHE_TIMEOUT)
+        return JsonResponse(payload)
